@@ -3,9 +3,8 @@ import util
 from BomWeightAmount import BomWeightAmount
 
 logger = util.get_logger(__file__)
-
+s, config = util.load_config()
 if __name__ == '__main__':
-
     s, config = util.load_config()
 
     if s:

@@ -5,6 +5,7 @@ import util
 
 util.running_prerequisite()
 logger = util.get_logger(__file__)
+s, config = util.load_config()
 
 
 class BomWeightAmount:
@@ -14,6 +15,7 @@ class BomWeightAmount:
     limit = 0
     total_weight = 0
     total_area = 0
+    exclude_type = config["exclude_type"].split(',')
 
     def __init__(self, bom_path, bom_list_file):
 
@@ -69,9 +71,8 @@ class BomWeightAmount:
     def xlrd_method(self, excel_sheet, path):
         for row in range(1, excel_sheet.nrows):
             self.limit += 1
-
-            if type(excel_sheet.row_values(row)[0]) != str:
-                row = excel_sheet.row_values(row)
+            row = excel_sheet.row_values(row)
+            if type(row[0]) != str and row[7] not in self.exclude_type:
                 try:
                     self.total_weight += float(row[4]) * float(row[5])
                     self.total_area += float(row[4]) * float(row[6])
@@ -86,8 +87,7 @@ class BomWeightAmount:
     def openpyxl_method(self, excel_sheet, path):
         for row in excel_sheet.iter_rows(min_row=3, min_col=1, max_col=12, values_only=True):
             self.limit += 1
-
-            if row[0] is not None:
+            if row[0] is not None and row[7] not in self.exclude_type:
                 try:
                     self.total_weight += float(row[4]) * float(row[5])
                     self.total_area += float(row[4]) * float(row[6])
