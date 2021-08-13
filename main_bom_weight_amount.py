@@ -23,7 +23,6 @@ if __name__ == '__main__':
             # 取得BOM裡面的內容
             # 寫到原本的EXCEL BOM LIST中
             for prefix, file_name, weight_loc, area_loc in bwa.parse_bom():
-                print(prefix, file_name, weight_loc, area_loc)
                 bwa.get_bom_content(prefix, file_name)
                 bwa.write_data(weight_loc, area_loc)
 
